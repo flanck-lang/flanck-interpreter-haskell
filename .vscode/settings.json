@@ -1,0 +1,6 @@
+{
+  "editor.defaultFormatter": "haskell.haskell",
+  "haskell.toolchain": {
+    "ghc": "9.2.4"
+  }
+}
