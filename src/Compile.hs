@@ -4,10 +4,13 @@ module Compile
   ( compile,
     Compiled,
     Instruction,
+    Stack,
   )
 where
 
-type Instruction = ([[Bool]], [[Bool]])
+type Stack = [Bool]
+
+type Instruction = ([Stack], [Stack])
 
 type Compiled = [Instruction]
 

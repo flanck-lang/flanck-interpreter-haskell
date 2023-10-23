@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       Compile
+      Execute
       ToString
   other-modules:
       Paths_flanck
