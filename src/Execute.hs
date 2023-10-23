@@ -8,10 +8,12 @@ import Compile
 
 type ProgramState = [Stack]
 
-execute :: [Instruction] -> ProgramState -> ProgramState
-execute compiled state =
+execute :: [Instruction] -> ProgramState -> Int -> ProgramState
+
+execute _ state 0 = state
+execute compiled state count =
   let (resState, didExecute) = executeInstructions compiled state
-  in if didExecute then execute compiled resState else resState
+  in if didExecute then execute compiled resState (count - 1) else resState
 
 canExecuteInstruction :: Instruction -> ProgramState -> Bool
 --canExecuteInstruction (cwds,_) state = and $ map (\(a,b) -> a==b) $ zip cwds state
@@ -31,15 +33,17 @@ executeInstructions (instruction:rest) state =
       
 
 modifyState :: Instruction -> ProgramState -> ProgramState
-modifyState instruction = removeInstruction instruction
------------------------- ^ addInstructions . removeInstruction instruction
---addInstructions :: Instruction 
+modifyState instruction= addInstruction instruction . removeInstruction instruction
+
+addInstruction :: Instruction -> ProgramState -> ProgramState
+addInstruction (_, add) state = 
+  map (\(ins, stack) -> ins ++ stack) $ zipOrDefault [] [] add state
 
 removeInstruction :: Instruction -> ProgramState -> ProgramState
-removeInstruction (cwds,_) state = map (\(remove, stack) -> removeFrom remove stack)$ zipOrDefault [] [] cwds state
+removeInstruction (cwds,_) state = map (\(remove, stack) -> removeFrom remove stack) $ zipOrDefault [] [] cwds state
 
 removeFrom :: [a] -> [b] -> [b]
-removeFrom (_:a) (_:ls) = ls
+removeFrom (_:a) (_:ls) = removeFrom a ls
 removeFrom [] ls = ls
 
 zipOrDefault :: a -> b -> [a] -> [b] -> [(a,b)]
