@@ -1,5 +1,6 @@
 module ToString
   ( compiledToString,
+    stacksToString
   )
 where
 
@@ -14,3 +15,4 @@ instructionToString (cbds, wbds) = stacksToString cbds ++ ":" ++ stacksToString 
 
 stacksToString :: [[Bool]] -> [Char]
 stacksToString stacks = intercalate "|" $ map (map (\v -> if v then '1' else '0')) stacks
+

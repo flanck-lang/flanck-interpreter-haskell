@@ -51,5 +51,3 @@ zipOrDefault aDef bDef (a:aRest) (b:bRest) = (a, b):zipOrDefault aDef bDef aRest
 zipOrDefault aDef bDef [] (b:bRest) = (aDef, b):zipOrDefault aDef bDef [] bRest 
 zipOrDefault aDef bDef (a:aRest) [] = (a, bDef):zipOrDefault aDef bDef aRest []
 zipOrDefault aDef bDef [] [] = []
-
---addInstructions :: Instruction -> ProgramState -> ProgramState
