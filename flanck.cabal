@@ -27,6 +27,7 @@ library
   exposed-modules:
       Compile
       Execute
+      ParseInt
       ToString
   other-modules:
       Paths_flanck
