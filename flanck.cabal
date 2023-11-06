@@ -25,6 +25,8 @@ source-repository head
 
 library
   exposed-modules:
+      Arguments
+      ASCII
       Compile
       Execute
       ParseInt
@@ -38,6 +40,9 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
+    , bytestring >=0.11
+    , optparse-applicative
+    , test-framework
   default-language: Haskell2010
 
 executable flanck-exe
@@ -51,7 +56,10 @@ executable flanck-exe
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , bytestring >=0.11
     , flanck
+    , optparse-applicative
+    , test-framework
   default-language: Haskell2010
 
 test-suite flanck-test
@@ -66,5 +74,8 @@ test-suite flanck-test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , bytestring >=0.11
     , flanck
+    , optparse-applicative
+    , test-framework
   default-language: Haskell2010

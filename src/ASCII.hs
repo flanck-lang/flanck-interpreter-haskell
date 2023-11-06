@@ -1,4 +1,4 @@
-module ASCII (stringToWord8List, booleansToString, booleansToWord8List) where
+module ASCII (stringToWord8List, booleansToString, booleansToWord8List, stringToBooleans) where
 
 import Data.Word
 import Data.Bits
