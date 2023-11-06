@@ -17,8 +17,13 @@ execute compiled state count =
 
 canExecuteInstruction :: Instruction -> ProgramState -> Bool
 --canExecuteInstruction (cwds,_) state = and $ map (\(a,b) -> a==b) $ zip cwds state
-canExecuteInstruction (cwds,_) state = and $ map (\(lsa, lsb) -> and $ map (\(a,b) -> a==b) $ zip lsa lsb) $ zipOrDefault [] [] cwds state
+canExecuteInstruction (cwds,_) state = and $ map (uncurry stackCanBeRemoved) $ zipOrDefault [] [] cwds state
 
+stackCanBeRemoved :: Stack -> Stack -> Bool
+--stackCanBeRemoved stackToBeRemoved stack
+stackCanBeRemoved (x:stackToBeRemoved) (y:stack) = x == y && stackCanBeRemoved stackToBeRemoved stack
+stackCanBeRemoved [] _ = True
+stackCanBeRemoved _ _ = False
 
 executeInstructions :: [Instruction] -> ProgramState -> (ProgramState, Bool)
 executeInstructions [] state = (state, False)
@@ -33,7 +38,7 @@ executeInstructions (instruction:rest) state =
       
 
 modifyState :: Instruction -> ProgramState -> ProgramState
-modifyState instruction= addInstruction instruction . removeInstruction instruction
+modifyState instruction state = addInstruction instruction $ removeInstruction instruction state
 
 addInstruction :: Instruction -> ProgramState -> ProgramState
 addInstruction (_, add) state = 
