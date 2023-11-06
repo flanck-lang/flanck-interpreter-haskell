@@ -56,10 +56,10 @@ main = do
     content <- hGetContents handle
     let input = if length args >= 2 then Just $ args !! 1 else Nothing
     let startingStacks = if isNothing input 
-        then [[True]] 
+        then [[True], [], []] 
         else if inputStacks
           then compileMultipleStacks $ val input
-          else [[True], stringToBooleans $ val input]
+          else [[True], stringToBooleans $ val input, []]
     let maxExecutions = if length args >= 3 then parsePosInt (args !! 2) (100000000) else 1000000000
     let compiled = compile content 
     let res = execute compiled startingStacks maxExecutions
