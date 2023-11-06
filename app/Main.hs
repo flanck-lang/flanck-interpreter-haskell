@@ -17,9 +17,11 @@ import ASCII (stringToBooleans, booleansToString)
 exitWithErrorMessage :: String -> ExitCode -> IO a
 exitWithErrorMessage str e = hPutStrLn stderr str >> exitWith e
 
--- stack 0: input
--- stack 1: output
+-- stack 0: 1 (default input)
+-- stack 1: input
+-- stack 2: output
 
+-- sussy
 val :: Maybe a -> a
 val (Just x) = x
 
@@ -27,13 +29,14 @@ main :: IO ()
 main = do
   let documentation = "Usage: flanck <file-path> [input] [max-execution-count]\n\n\
   \Options:\n\
-  \  --output-stacks-b     If to output stacks binary or the second\
+  \  --output-stacks-b     If to output stacks binary or the third \n\
   \                        stack as ascii (default: ascii).\n\n\
-  \  --old-output-stacks   If the --output-stacks-b option is enabled,\
+  \  --old-output-stacks   If the --output-stacks-b option is enabled,\n\
   \                        if to output the stacks in the classic syntax (default: false).\n\n\
-  \  --input-stacks-b      If to input stacks binary\
-  \                        (pipe symbol for multiple stacks starting at index 0)\
-  \                        or input the second stack with the input interpreted\
+  \  --input-stacks-b      If to input stacks binary\n\
+  \                        (pipe symbol for multiple stacks starting at index 0)\n\
+  \                        or input the first stack with 1 and\n\
+  \                        input the second stack with the input interpreted\n\
   \                        in ascii (default: ascii).\n\n\
   \  --help                Show this help information.\n\
   \"
@@ -48,21 +51,21 @@ main = do
   else do 
     if null args
       then exitWithErrorMessage error (ExitFailure 2)
+      else pure ()
+    handle <- openFile (head args) ReadMode
+    content <- hGetContents handle
+    let input = if length args >= 2 then Just $ args !! 1 else Nothing
+    let startingStacks = if isNothing input 
+        then [[True]] 
+        else if inputStacks
+          then compileMultipleStacks $ val input
+          else [[True], stringToBooleans $ val input]
+    let maxExecutions = if length args >= 3 then parsePosInt (args !! 2) (100000000) else 1000000000
+    let compiled = compile content 
+    let res = execute compiled startingStacks maxExecutions
+    if outputStacks
+      then do
+        putStrLn $ stacksToString res
       else do
-        handle <- openFile (head args) ReadMode
-        content <- hGetContents handle
-        let input = if length args >= 2 then Just $ args !! 1 else Nothing
-        let startingStacks = if isNothing input 
-            then [[True]] 
-            else if inputStacks
-              then compileMultipleStacks $ val input
-              else [stringToBooleans $ val input]
-        let maxExecutions = if length args >= 3 then parsePosInt (args !! 2) (100000000) else 1000000000
-        let compiled = compile content 
-        let res = execute compiled startingStacks maxExecutions
-        if outputStacks
-          then do
-            putStrLn $ stacksToString res
-          else do
-            putStrLn $ booleansToString $ res !! 1 --last booleans cut off or first booleans?
-        hClose handle
+        putStrLn $ booleansToString $ res !! 2 --last booleans cut off or first booleans?
+    hClose handle
