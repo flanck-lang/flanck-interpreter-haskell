@@ -1,9 +1,14 @@
-module ASCII (stringToWord8List, booleansToString, booleansToWord8List, stringToBooleans) where
+module ASCII (stringToWord8List, booleansToString, booleansToWord8List, stringToBooleans, charToWord, wordToChar, trunicateBooleansToLastBytes) where
 
 import Data.Word
 import Data.Bits
 
 import qualified Data.ByteString.Char8 as C
+
+--   >[110 1010 1010 1111 0000] -> >[1010 1010 1111 0000]
+-- (8er boolean blöcke werden von hinten gruppiert, alles was dann vorne nicht in die 8er blöcke passt, wird verworfen
+trunicateBooleansToLastBytes :: [Bool] -> [Bool]
+trunicateBooleansToLastBytes arr = reverse $ take ((length arr `div` 8)*8) $ reverse arr
 
 stringToWord8List :: String -> [Word8]
 stringToWord8List str = map charToWord $ C.unpack (C.pack str)
@@ -42,9 +47,3 @@ booleansToWord8List _ = []
 boolToWord8 :: Bool -> Int -> Word8
 boolToWord8 True pos = 1*(2^pos)
 boolToWord8 False pos = 0
-
-
---ghci> testBit (1 :: Word8) 0
---True
---ghci> testBit (1 :: Word8) 1
---False

@@ -42,24 +42,47 @@ library
       base >=4.7 && <5
     , bytestring >=0.11
     , optparse-applicative
-    , test-framework
+    , tasty
+    , tasty-quickcheck
+    , tasty-smallcheck
   default-language: Haskell2010
 
-executable flanck-exe
+executable flanckpp-compiler-exe
   main-is: Main.hs
   other-modules:
       Paths_flanck
   autogen-modules:
       Paths_flanck
   hs-source-dirs:
-      app
+      app/flanckpp-compiler
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
     , bytestring >=0.11
     , flanck
     , optparse-applicative
-    , test-framework
+    , tasty
+    , tasty-quickcheck
+    , tasty-smallcheck
+  default-language: Haskell2010
+
+executable interpreter-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_flanck
+  autogen-modules:
+      Paths_flanck
+  hs-source-dirs:
+      app/interpreter
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , bytestring >=0.11
+    , flanck
+    , optparse-applicative
+    , tasty
+    , tasty-quickcheck
+    , tasty-smallcheck
   default-language: Haskell2010
 
 test-suite flanck-test
@@ -77,5 +100,7 @@ test-suite flanck-test
     , bytestring >=0.11
     , flanck
     , optparse-applicative
-    , test-framework
+    , tasty
+    , tasty-quickcheck
+    , tasty-smallcheck
   default-language: Haskell2010

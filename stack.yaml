@@ -30,11 +30,13 @@ resolver:
 #   - auto-update
 #   - wai
 dependencies:
+  - base >= 4.7 && < 5
   - split
   - bytestring
-  - test-framework
   - optparse-applicative
-
+  - tasty
+  - tasty-smallcheck
+  - tasty-quickcheck
 
 packages:
 - .

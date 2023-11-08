@@ -22,8 +22,10 @@ description:         Please see the README on GitHub at <https://github.com/gith
 dependencies:
 - base >= 4.7 && < 5
 - bytestring >= 0.11
-- test-framework
 - optparse-applicative
+- tasty
+- tasty-smallcheck
+- tasty-quickcheck
 
 ghc-options:
 - -Wall
@@ -40,9 +42,18 @@ library:
   source-dirs: src
 
 executables:
-  flanck-exe:
+  interpreter-exe:
     main:                Main.hs
-    source-dirs:         app
+    source-dirs:         app/interpreter
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - flanck
+  flanckpp-compiler-exe:
+    main:                Main.hs
+    source-dirs:         app/flanckpp-compiler
     ghc-options:
     - -threaded
     - -rtsopts
